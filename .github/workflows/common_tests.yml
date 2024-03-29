@@ -4,7 +4,7 @@ jobs:
   CommonTests:
     strategy:
         fail-fast: false
-    runs-on: windows-latest
+    runs-on: macos-11
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -13,7 +13,7 @@ jobs:
       shell: pwsh
       run: |
         Install-Module Pester -Force -Scope CurrentUser -RequiredVersion 4.10.1
-        Install-Module Assert -Force -Scope CurrentUser -RequiredVersion 0.9.1
+        Install-Module Assert -Force -Scope CurrentUser
 
     - name: Run tests
       shell: pwsh  
