@@ -4,12 +4,8 @@ class BaseVersionsParser {
 
     [SemVer[]] GetAvailableVersions() {
         $allVersionsRaw = $this.ParseAllAvailableVersions()
-        Write-Host "The following raw versions are available :`n${allVersionsRaw}"
-
         $allVersions = $allVersionsRaw | ForEach-Object { $this.FormatVersion($_) }
-        Write-Host "The following all versions are available :`n${allVersions}"
         $filteredVersions = $allVersions | Where-Object { $this.ShouldIncludeVersion($_) }
-        Write-Host "The following filtered versions are available :`n${filteredVersions}"
         return $filteredVersions
     }
 
@@ -26,7 +22,6 @@ class BaseVersionsParser {
     }
 
     hidden [bool] ShouldIncludeVersion([SemVer]$Version) {
-            Write-Host "filtered method called in base"
         throw "Method is not implemented in base class"
     }
 
