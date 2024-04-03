@@ -26,6 +26,7 @@ class BaseVersionsParser {
     }
 
     hidden [bool] ShouldIncludeVersion([SemVer]$Version) {
+            Write-Host "filtered method called in base"
         throw "Method is not implemented in base class"
     }
 
