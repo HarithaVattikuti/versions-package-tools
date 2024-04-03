@@ -19,6 +19,8 @@ class NodeVersionsParser: BaseVersionsParser {
     }
 
     hidden [bool] ShouldIncludeVersion([SemVer]$Version) {
+        Write-Host "filtered method called in node parser :`n${Version}"
+        Write-Host $Version.Major
         if ($Version.Major -lt 8) {
             return $false
         }
