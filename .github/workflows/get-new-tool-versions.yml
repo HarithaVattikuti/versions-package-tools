@@ -34,17 +34,9 @@ jobs:
         with:
           submodules: true
 
-      - name: Checkout versions-package-tools repo
-        uses: actions/checkout@v3
-        with:
-          repository: HarithaVattikuti/versions-package-tools
-          path: versions-package-tools
-
       - id: Get_new_versions
         name: Get new versions
-        run: |
-          pwsh -File versions-package-tools/get-new-tool-versions/get-new-tool-versions.ps1 -ToolName ${{ inputs.tool-name }}
-        #run: ./helpers/get-new-tool-versions/get-new-tool-versions.ps1 -ToolName ${{ inputs.tool-name }}
+        run: ./helpers/get-new-tool-versions/get-new-tool-versions.ps1 -ToolName ${{ inputs.tool-name }}
 
   check_new_versions:
     name: Check new versions
