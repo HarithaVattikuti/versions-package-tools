@@ -18,6 +18,6 @@ jobs:
     - name: Run tests
       shell: pwsh  
       run: |
-        Import-Module Pester 
+        Import-Module Pester -WarningAction SilentlyContinue
         Import-Module Assert -WarningAction SilentlyContinue
         Invoke-Pester -EnableExit
