@@ -12,12 +12,12 @@ jobs:
     - name: Install Pester
       shell: pwsh
       run: |
-        Install-Module Pester -Force -Scope CurrentUser -RequiredVersion 4.10.1 -WarningAction SilentlyContinue
-        Install-Module Assert -Force -Scope CurrentUser -WarningAction SilentlyContinue
+        Install-Module Pester -Force -Scope CurrentUser
+        Install-Module Assert -Force -Scope CurrentUser
 
     - name: Run tests
       shell: pwsh  
       run: |
-        Import-Module Pester -WarningAction SilentlyContinue
-        Import-Module Assert -WarningAction SilentlyContinue
+        Import-Module Pester
+        Import-Module Assert
         Invoke-Pester -EnableExit
