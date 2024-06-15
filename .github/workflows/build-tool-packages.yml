@@ -104,33 +104,33 @@ jobs:
         path: ${{ runner.temp }}/artifact
 
   test:
-    name: Test ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}]
+    name: Test ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     needs: build
     runs-on: ${{ matrix.os }}
     env: 
-      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.arch }}
+      ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
     strategy:
       fail-fast: false
       matrix:
         include:
         - os: ubuntu-latest
           platform: linux
-          arch: x64
+          architecture: x64
         - os: macos-13
           platform: darwin
-          arch: x64
+          architecture: x64
         - os: windows-latest
           platform: win32
-          arch: x64
+          architecture: x64
         - os: ubuntu-latest
           platform: linux
-          arch: arm64
+          architecture: arm64
         - os: macos-latest
           platform: darwin
-          arch: arm64
+          architecture: arm64
         - os: windows-latest
           platform: win32
-          arch: arm64
+          architecture: arm64
 
     steps:
     - uses: actions/checkout@v4
