@@ -72,7 +72,7 @@ jobs:
 
   build-arm:
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: (inputs.tool-name == 'go') || (inputs.tool-name == 'node' && inputs['tool-version'] > '20.0.0')
     env: 
       ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
@@ -171,7 +171,6 @@ jobs:
         if ('${{ matrix.platform }}' -eq 'win32') { powershell ./setup.ps1 } 
          else {
               sh ./setup.sh
-              cp ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}/build_output.txt ${{ runner.temp }}
             }
       working-directory: ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}
 
