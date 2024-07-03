@@ -35,19 +35,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - platform: linux
-          architecture: x64
-        - platform: darwin
-          architecture: x64
+        platform: [linux, darwin, win32]
+        architecture: [x64, arm64]
+        exclude:
         - platform: win32
-          architecture: x64
-        - platform: linux
           architecture: arm64
-        - platform: darwin
-          architecture: arm64
-            
-          
+                      
     steps:
     - uses: actions/checkout@v4
       with:
@@ -78,8 +71,7 @@ jobs:
         include:       
         - platform: win32
           architecture: arm64
-            
-          
+                      
     steps:
     - uses: actions/checkout@v4
       with:
