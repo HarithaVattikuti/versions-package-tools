@@ -28,6 +28,7 @@ defaults:
 
 jobs:
   build:
+    if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     runs-on: ubuntu-latest
     env: 
@@ -36,9 +37,8 @@ jobs:
       fail-fast: false
       matrix:
         platform: [linux, darwin, win32]
-        architecture: [x64, arm64]
+        architecture: [x64, arm64]          
 
-    if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
 
     steps:
     - uses: actions/checkout@v4
@@ -58,6 +58,7 @@ jobs:
         path: ${{ runner.temp }}/artifact
 
   test:
+    if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
     name: Test ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
     needs: build
     runs-on: ${{ matrix.os }}
@@ -86,7 +87,6 @@ jobs:
           platform: win32
           architecture: arm64
 
-    if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
 
     steps:
     - uses: actions/checkout@v4
