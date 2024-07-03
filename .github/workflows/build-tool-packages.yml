@@ -38,7 +38,7 @@ jobs:
       - name: Define os
         id: exclude-jobs
         run: |
-          echo 'jobs=[{"platform": "win32"},{"architecture": "arm64"}]' >> "$GITHUB_OUTPUT"  
+          echo 'jobs=[{"platform": "win32","architecture": "arm64"}]' >> "$GITHUB_OUTPUT"  
           
   build:
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
