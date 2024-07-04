@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
+      excludewinarm: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
     strategy:
       fail-fast: false
       matrix:
@@ -40,11 +41,6 @@ jobs:
         architecture: [x64, arm64]
             
     steps:
-    - name: Set env BRANCH
-      run: |
-        echo "excludewinarm=${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}" >> $GITHUB_ENV
-        #echo "NEED=${{ 3 > 2 }}" >> $GITHUB_ENV
-      
     - name: checkout
       id: tempch
       if: env.excludewinarm == 'true'
