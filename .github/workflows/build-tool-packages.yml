@@ -27,21 +27,9 @@ defaults:
 
 
 jobs:
-  exclude-jobs:
-    runs-on: ubuntu-latest
-    
-    outputs:
-      jobs: ${{ steps.exclude-jobs.outputs.jobs }}
-      
-    steps:
-      - name: Define excluded jobs
-        id: exclude-jobs
-        run: |
-          echo 'jobs=[{"platform":"win32","architecture":"arm64"}]' >> "$GITHUB_OUTPUT"
 
   build:
     name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }} [${{ matrix.platform }}] [${{ matrix.architecture }}]
-    needs: exclude-jobs
     runs-on: ubuntu-latest
     env: 
       ARTIFACT_NAME: ${{ inputs.tool-name }}-${{ inputs.tool-version }}-${{ matrix.platform }}-${{ matrix.architecture }}
@@ -50,20 +38,23 @@ jobs:
       matrix:
         platform: [linux, darwin, win32]
         architecture: [x64, arm64]
-        exclude: ${{ fromJSON(needs.exclude-jobs.outputs.jobs) }}
             
     steps:
-    - uses: actions/checkout@v4
+    - name: checkout
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
+      uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
                                                      -Platform ${{ matrix.platform }} `
                                                      -Architecture ${{ matrix.architecture }}
 
     - name: Publish artifact
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.ARTIFACT_NAME }}
@@ -99,20 +90,25 @@ jobs:
           architecture: arm64
 
     steps:
-    - uses: actions/checkout@v4
+    - name: checkout
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
+      uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Fully cleanup the toolcache directory before testing
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: ./helpers/clean-toolcache.ps1 -ToolName "${{ inputs.tool-name }}"
 
     - name: Download artifact
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}
 
     - name: Extract files
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: |
         if ('${{ matrix.platform }}' -eq 'win32') {
           if ('${{ inputs.tool-name }}' -eq 'node') {
@@ -132,6 +128,7 @@ jobs:
       working-directory: ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}
 
     - name: Apply build artifact to the local machine
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: |
         if ('${{ matrix.platform }}' -eq 'win32') { powershell ./setup.ps1 } 
          else {
@@ -140,7 +137,7 @@ jobs:
       working-directory: ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}
 
     - name: Setup Node.js ${{ inputs.tool-version }}
-      if: inputs.tool-name == 'node'
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') && inputs.tool-name == 'node'}}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.tool-version }}
@@ -152,6 +149,7 @@ jobs:
         go-version: ${{ inputs.tool-version }}
 
     - name: Wait for the logs
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: |
         Write-Host "Fake step that does nothing"
         Write-Host "We need it because log from the previous step 'Setup ${{ inputs.tool-name }}' is not available here yet."
@@ -160,6 +158,7 @@ jobs:
         for ($i = 0; $i -lt 200; $i++) { Get-Random }
 
     - name: Run tests
+      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       env: 
         VERSION: ${{ inputs.tool-version }}
       run: |
