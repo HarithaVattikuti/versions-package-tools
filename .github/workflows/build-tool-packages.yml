@@ -42,16 +42,17 @@ jobs:
     steps:
     - name: Set env BRANCH
       run: |
-        #echo "excludewinarm=${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}" >> $GITHUB_ENV
-        echo "NEED=${{ 3 > 2 }}" >> $GITHUB_ENV
+        echo "excludewinarm=${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}" >> $GITHUB_ENV
+        #echo "NEED=${{ 3 > 2 }}" >> $GITHUB_ENV
       
     - name: checkout
+      if:  ${{ env.excludewinarm }} == 'true'
       uses: actions/checkout@v4
       with:
         submodules: true
 
     - name: Build ${{ inputs.tool-name }} ${{ inputs.tool-version }}
-      if: env.NEED == 'true'
+      if:  ${{ env.excludewinarm }} == 'true'
       #if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
       run: |
         ./builders/build-${{ inputs.tool-name }}.ps1 -Version ${{ inputs.tool-version }} `
