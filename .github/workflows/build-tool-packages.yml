@@ -139,7 +139,7 @@ jobs:
       working-directory: ${{ runner.temp }}/${{ env.ARTIFACT_NAME }}
 
     - name: Setup Node.js ${{ inputs.tool-version }}
-      if: env.excludewinarm == 'true' && inputs.tool-name == 'node'}}
+      if: env.excludewinarm == 'true' && inputs.tool-name == 'node'
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.tool-version }}
