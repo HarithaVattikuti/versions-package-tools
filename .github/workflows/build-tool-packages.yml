@@ -40,8 +40,13 @@ jobs:
         architecture: [x64, arm64]
             
     steps:
+    - name: Set env BRANCH
+      run: |
+        echo "excludewinarm=${{ (inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}" >> $GITHUB_ENV
+        
+      
     - name: checkout
-      if: ${{ !(inputs.tool-name == 'node' && inputs['tool-version'] < '20.0.0' && matrix.architecture == 'arm64' && matrix.platform == 'win32') }}
+      if: env.excludewinarm == 'false'
       uses: actions/checkout@v4
       with:
         submodules: true
