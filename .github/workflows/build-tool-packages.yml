@@ -72,7 +72,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - os: ubuntu-latest
+        - os: ubuntu-22.04
           platform: linux
           architecture: x64
         - os: macos-13
@@ -81,14 +81,14 @@ jobs:
         - os: windows-latest
           platform: win32
           architecture: x64
-        - os: setup-actions-ubuntu-arm64-2-core
+        - os: ubuntu-22.04-arm
           platform: linux
           architecture: arm64
           runner_type: self-hosted
         - os: macos-latest
           platform: darwin
           architecture: arm64
-        - os: setup-actions-windows-arm64-4-core
+        - os: windows-11-arm
           platform: win32
           architecture: arm64
           runner_type: self-hosted
