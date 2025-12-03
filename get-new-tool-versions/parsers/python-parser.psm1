@@ -2,7 +2,7 @@ using module "./base-parser.psm1"
 
 class PythonVersionsParser: BaseVersionsParser {
     [SemVer[]] GetUploadedVersions() {
-        $url = $this.BuildGitHubFileUrl("actions", "python-versions", "main", "versions-manifest.json")
+        $url = $this.BuildGitHubFileUrl("HarithaVattikuti", "python-versions", "main", "versions-manifest.json")
         $releases = Invoke-RestMethod $url -MaximumRetryCount $this.ApiRetryCount -RetryIntervalSec $this.ApiRetryIntervalSeconds
         return $releases.version
     }
