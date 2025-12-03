@@ -67,7 +67,7 @@ function Queue-Builds {
         Write-Host "Queue build for $version..."
         $GitHubApi.CreateWorkflowDispatch($WorkflowFileName, $WorkflowDispatchRef, $inputs)
 
-        Start-Sleep -s 10
+        Start-Sleep -s 60
         $workflowRunLink = Get-WorkflowRunLink -GitHubApi $GitHubApi `
                                                -WorkflowFileName $WorkflowFileName `
                                                -ToolVersion $version
