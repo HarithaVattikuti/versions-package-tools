@@ -59,14 +59,14 @@ jobs:
           $gitHubApi.CancelWorkflow("$env:GITHUB_RUN_ID")
           Start-Sleep -Seconds 60
       
-      - name: Send Slack notification
-        run: |
-          $pipelineUrl = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
-          $message = "The following versions of '${{ inputs.tool-name }}' are available to upload: ${{ env.TOOL_VERSIONS }}\nLink to the pipeline: $pipelineUrl"
-          ./helpers/get-new-tool-versions/send-slack-notification.ps1 -Url "${{ secrets.SLACK_CHANNEL_URL }}" `
-                                                                      -ToolName "${{ inputs.tool-name }}" `
-                                                                      -ImageUrl "${{ inputs.image-url }}" `
-                                                                      -Text "$message"
+      # - name: Send Slack notification
+      #   run: |
+      #     $pipelineUrl = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+      #     $message = "The following versions of '${{ inputs.tool-name }}' are available to upload: ${{ env.TOOL_VERSIONS }}\nLink to the pipeline: $pipelineUrl"
+      #     ./helpers/get-new-tool-versions/send-slack-notification.ps1 -Url "${{ secrets.SLACK_CHANNEL_URL }}" `
+      #                                                                 -ToolName "${{ inputs.tool-name }}" `
+      #                                                                 -ImageUrl "${{ inputs.image-url }}" `
+      #                                                                 -Text "$message"
   trigger_builds:
     name: Trigger builds
     runs-on: ubuntu-latest
@@ -89,21 +89,21 @@ jobs:
                                              -ToolVersions "${{ env.TOOL_VERSIONS }}" `
                                              -PublishReleases "true"
 
-  check_build:
-    name: Check build for failures 
-    runs-on: ubuntu-latest
-    needs: [find_new_versions, check_new_versions, trigger_builds]
-    if: failure()
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          submodules: true
+  # check_build:
+  #   name: Check build for failures 
+  #   runs-on: ubuntu-latest
+  #   needs: [find_new_versions, check_new_versions, trigger_builds]
+  #   if: failure()
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #       with:
+  #         submodules: true
 
-      - name: Send Slack notification if build fails
-        run: |
-          $pipelineUrl = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
-          $message = "The build of the '${{ inputs.tool-name }}' detection pipeline failed :progress-error:\nLink to the pipeline: $pipelineUrl"
-          ./helpers/get-new-tool-versions/send-slack-notification.ps1 -Url "${{ secrets.SLACK_CHANNEL_URL }}" `
-                                                                      -ToolName "${{ inputs.tool-name }}" `
-                                                                      -Text "$message" `
-                                                                      -ImageUrl "${{ inputs.image-url }}"
+  #     - name: Send Slack notification if build fails
+  #       run: |
+  #         $pipelineUrl = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+  #         $message = "The build of the '${{ inputs.tool-name }}' detection pipeline failed :progress-error:\nLink to the pipeline: $pipelineUrl"
+  #         ./helpers/get-new-tool-versions/send-slack-notification.ps1 -Url "${{ secrets.SLACK_CHANNEL_URL }}" `
+  #                                                                     -ToolName "${{ inputs.tool-name }}" `
+  #                                                                     -Text "$message" `
+  #                                                                     -ImageUrl "${{ inputs.image-url }}"
