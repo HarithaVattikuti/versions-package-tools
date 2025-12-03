@@ -15,6 +15,8 @@ Import-Module "$PSScriptRoot/parsers/parsers-factory.psm1"
 $ToolVersionParser = Get-ToolVersionsParser -ToolName $ToolName
 $VersionsFromDist = $ToolVersionParser.GetAvailableVersions()
 $VersionsFromManifest = $ToolVersionParser.GetUploadedVersions()
+Write-Host "The following new versions are available:`n${VersionsFromManifest}"
+
 
 $VersionsToBuild = $VersionsFromDist | Where-Object { $VersionsFromManifest -notcontains $_ }
 
