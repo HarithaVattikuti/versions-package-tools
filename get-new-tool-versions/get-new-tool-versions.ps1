@@ -21,6 +21,8 @@ $VersionsToBuild = $VersionsFromDist | Where-Object { $VersionsFromManifest -not
 if ($VersionsToBuild) {
     $availableVersions = $VersionsToBuild -join ", "
     Write-Host "The following versions are available to build:`n${availableVersions}"
+    Write-Host "Checking call from TestlatestArtifact branch"
+
     "TOOL_VERSIONS=${availableVersions}" >> $env:GITHUB_OUTPUT
 } else {
     Write-Host "There aren't versions to build"
