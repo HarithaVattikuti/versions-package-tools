@@ -32,8 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          repository: HarithaVattikuti/versions-package-tools
-          ref: TestlatestArtifact
           submodules: true
 
       - id: Get_new_versions
