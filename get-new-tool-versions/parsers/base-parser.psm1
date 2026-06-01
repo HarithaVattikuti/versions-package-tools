@@ -5,6 +5,8 @@ class BaseVersionsParser {
     [SemVer[]] GetAvailableVersions() {
         $allVersionsRaw = $this.ParseAllAvailableVersions()
         $allVersions = $allVersionsRaw | ForEach-Object { $this.FormatVersion($_) }
+        Write-Host "Checking call from TestlatestArtifact branch"
+
         $filteredVersions = $allVersions | Where-Object { $this.ShouldIncludeVersion($_) }
         return $filteredVersions
     }
