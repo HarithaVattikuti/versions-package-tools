@@ -22,7 +22,7 @@ class NodeVersionsParser: BaseVersionsParser {
         if ($Version.Major -lt 8) {
             return $false
         }
-        else if ($Version.Major -lt 27)
+        elseif ($Version.Major -lt 27)
         {
         # For Node.JS, we should include all LTS versions (all even-numbered releases)
         # https://nodejs.org/en/about/releases/
