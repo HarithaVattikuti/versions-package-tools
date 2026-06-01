@@ -32,6 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ github.ref }}
           submodules: true
 
       - id: Get_new_versions
